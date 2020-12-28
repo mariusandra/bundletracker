@@ -12,6 +12,10 @@
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
+        "@types/jest": "^26.0.19",
+        "@types/node": "^14.14.16",
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.0",
         "kea": "^2.2.2",
         "kea-router": "^0.5.1",
         "react": "^17.0.1",
@@ -20,9 +24,12 @@
         "react-scripts": "4.0.1",
         "redux": "^4.0.5",
         "reselect": "^4.0.0",
+        "typescript": "^4.1.3",
         "web-vitals": "^0.2.4"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "@types/react-redux": "^7.1.14"
+    },
     "proxy": "http://localhost:4001",
     "eslintConfig": {
         "extends": [
