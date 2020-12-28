@@ -1,0 +1,19 @@
+{
+    "name": "@bundletracker/server",
+    "version": "0.1.0",
+    "private": true,
+    "workspaces": [
+        "api",
+        "frontend"
+    ],
+    "scripts": {
+        "start": "yarn start:dev",
+        "start:dev": "concurrently -n API,FRONTEND -c blue,green \"yarn start:api:dev\" \"yarn start:frontend\"",
+        "start:api:dev": "cd api && yarn start:dev",
+        "start:api:dist": "cd api && yarn start:dist",
+        "start:frontend": "cd frontend && yarn start"
+    },
+    "devDependencies": {
+        "concurrently": "^5.3.0"
+    }
+}
