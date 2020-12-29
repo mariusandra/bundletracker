@@ -8,10 +8,11 @@
     ],
     "scripts": {
         "start": "yarn start:dev",
-        "start:dev": "concurrently -n API,FRONTEND -c blue,green \"yarn start:api:dev\" \"yarn start:frontend\"",
+        "start:dev": "concurrently -n API,FRONTEND,TYPEGEN -c blue,green,yellow \"yarn start:api:dev\" \"yarn start:frontend\" \"yarn start:typegen\"",
         "start:api:dev": "cd api && yarn start:dev",
         "start:api:dist": "cd api && yarn start:dist",
-        "start:frontend": "cd frontend && yarn start"
+        "start:frontend": "cd frontend && yarn start",
+        "start:typegen": "cd frontend && yarn typegen"
     },
     "devDependencies": {
         "concurrently": "^5.3.0"

@@ -6,7 +6,8 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "typegen": "kea-typegen watch"
     },
     "dependencies": {
         "@testing-library/jest-dom": "^5.11.4",
@@ -17,6 +18,7 @@
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
         "kea": "^2.2.2",
+        "kea-loaders": "^0.3.0",
         "kea-router": "^0.5.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
@@ -28,7 +30,8 @@
         "web-vitals": "^0.2.4"
     },
     "devDependencies": {
-        "@types/react-redux": "^7.1.14"
+        "@types/react-redux": "^7.1.14",
+        "kea-typegen": "^0.4.0"
     },
     "proxy": "http://localhost:4001",
     "eslintConfig": {

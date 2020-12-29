@@ -10,10 +10,6 @@ resetContext({
     plugins: [routerPlugin()],
 })
 
-fetch('/bundle.json')
-    .then((res) => res.json())
-    .then(console.log)
-
 ReactDOM.render(
     <Provider store={getContext().store}>
         <App />

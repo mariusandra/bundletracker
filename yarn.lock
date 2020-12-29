@@ -2181,6 +2181,11 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
+"@wessberg/ts-clone-node@0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@wessberg/ts-clone-node/-/ts-clone-node-0.3.8.tgz#25bf1e0625a4b4b836324427894ab138ebd7fb00"
+  integrity sha512-m/+1ox7e2K/KwWFe1K7OpiqTHZnraCG6urhCt4Y5Dxw8dr1NMcV52Q8qvJd0lGfhGhZiVD/SWbUj9i2wKzdK6w==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -7028,12 +7033,26 @@ jsprim@^1.2.2:
     array-includes "^3.1.2"
     object.assign "^4.1.2"
 
+kea-loaders@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/kea-loaders/-/kea-loaders-0.3.0.tgz#876a838cd65da4547d2611d8e180e7d867e2a657"
+  integrity sha512-aXrUjQf/GdJVDQqLtTWoY4gF1F+dTXv5U1LfCLffPhgrWRYHGTnaBV/K6pWxy1Qh+vMbepy80Nx9hFiK1owtHw==
+
 kea-router@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/kea-router/-/kea-router-0.5.1.tgz#de6490628e16dd67702ee329e1912721b709efa2"
   integrity sha512-qKAnT5TQxSWtkTifoZgRK+iQBtHCgKl11NoBldUmfunDo5eUtiYSK8rt7O123+fIZzXyg6PLQvJCRsSHf3Z3eA==
   dependencies:
     url-pattern "^1.0.3"
+
+kea-typegen@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/kea-typegen/-/kea-typegen-0.4.0.tgz#43807b764feda5363b0d7c34957a50a4c54086e6"
+  integrity sha512-YsbBvrL1z0Z20dwecsc3RFV3PakhOedPRqme1yvOsM1sU28km8KJoWviDpq1Zv3yXLjsa3gFg0Dg9RIB/maD/Q==
+  dependencies:
+    "@wessberg/ts-clone-node" "0.3.8"
+    prettier "^2.0.5"
+    yargs "^15.4.0"
 
 kea@^2.2.2:
   version "2.2.2"
@@ -9083,6 +9102,11 @@ prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
+
+prettier@^2.0.5:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
+  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
 
 pretty-bytes@^5.3.0:
   version "5.5.0"
@@ -11988,7 +12012,7 @@ yargs@^13.3.0, yargs@^13.3.2:
     y18n "^4.0.0"
     yargs-parser "^13.1.2"
 
-yargs@^15.4.1:
+yargs@^15.4.0, yargs@^15.4.1:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.4.1.tgz#0d87a16de01aee9d8bec2bfbf74f67851730f4f8"
   integrity sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==
