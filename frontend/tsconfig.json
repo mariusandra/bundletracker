@@ -17,7 +17,7 @@
       "jest"
     ],
     "resolveJsonModule": true,
-    "strict": true,
+    "strict": false,
     "lib": [
       "dom",
       "dom.iterable",
