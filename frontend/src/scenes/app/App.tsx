@@ -1,18 +1,10 @@
 import './styles.scss'
-import { useValues } from 'kea'
-import { treeLogic } from '../tree/treeLogic'
-import { TreeMap } from '../tree/TreeMap'
+import { TreeScene } from '../tree/TreeScene'
 
 export function App() {
-    const { cleanStats, windowWidth, windowHeight } = useValues(treeLogic)
-    console.log(cleanStats)
     return (
         <div className="App">
-            {cleanStats && windowWidth && windowHeight ? (
-                <div style={{ padding: 10, position: 'relative' }}>
-                    <TreeMap node={cleanStats} x={0} y={0} />
-                </div>
-            ) : null}
+            <TreeScene />
         </div>
     )
 }
