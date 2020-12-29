@@ -1,8 +1,9 @@
+import './styles.scss'
 import { useValues } from 'kea'
 import { treeLogic } from '../tree/treeLogic'
 import { TreeMap } from '../tree/TreeMap'
 
-function App() {
+export function App() {
     const { cleanStats, windowWidth, windowHeight } = useValues(treeLogic)
     console.log(cleanStats)
     return (
@@ -15,5 +16,3 @@ function App() {
         </div>
     )
 }
-
-export default App

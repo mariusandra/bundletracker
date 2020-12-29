@@ -1,6 +1,6 @@
 import { kea } from 'kea'
-import { treeLogicType } from '../../types/tree/treeLogicType'
-import { D3Tree } from '../types'
+import { treeLogicType } from './treeLogicType'
+import { D3Tree } from '../../types'
 import squarify from 'squarify'
 
 export const treeLogic = kea<treeLogicType<D3Tree>>({

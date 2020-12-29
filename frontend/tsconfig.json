@@ -37,6 +37,5 @@
     "bin"
   ],
   "include": [
-    "scenes" 
-  ]
+    "src" ]
 }

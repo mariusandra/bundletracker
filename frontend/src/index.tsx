@@ -4,8 +4,7 @@ import { resetContext, getContext } from 'kea'
 import { routerPlugin } from 'kea-router'
 import { windowValuesPlugin } from 'kea-window-values'
 import { Provider } from 'react-redux'
-import './styles.scss'
-import App from './App'
+import { App } from './scenes/app/App'
 
 resetContext({
     plugins: [routerPlugin(), windowValuesPlugin({ window: window })],

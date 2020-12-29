@@ -1,5 +1,5 @@
 import './styles.scss'
-import { D3Tree } from '../types'
+import { D3Tree } from '../../types'
 interface TreeMapProps {
     node: D3Tree
     level?: number
