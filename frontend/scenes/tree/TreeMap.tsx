@@ -12,7 +12,10 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0 }: TreeMapPro
     const { x0, x1, y0, y1 } = node.coords
 
     return (
-        <div className="tree-node" style={{ width: x1 - x0, height: y1 - y0, left: x0 - x, top: y0 - y }}>
+        <div
+            className={`tree-node${node.name === 'node_modules' ? ' node-modules' : ''}`}
+            style={{ width: x1 - x0, height: y1 - y0, left: x0 - x, top: y0 - y }}
+        >
             {node.children.length === 0 ? (
                 <div className="tree-heading">
                     {node.name} {node.value}

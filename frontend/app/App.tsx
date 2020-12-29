@@ -1,7 +1,6 @@
-import './App.css'
 import { useValues } from 'kea'
-import { treeLogic } from './tree/treeLogic'
-import { TreeMap } from './tree/TreeMap'
+import { treeLogic } from '../tree/treeLogic'
+import { TreeMap } from '../tree/TreeMap'
 
 function App() {
     const { cleanStats, windowWidth, windowHeight } = useValues(treeLogic)
