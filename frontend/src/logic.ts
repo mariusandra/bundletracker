@@ -1,14 +1,15 @@
 import { kea } from 'kea'
 import { logicType } from '../types/logicType'
+import { D3Tree } from './types'
 
 export const logic = kea<logicType>({
     actions: {
         loadStats: true,
-        setStats: (stats) => ({ stats }),
+        setStats: (stats: D3Tree) => ({ stats }),
     },
     reducers: {
         stats: [
-            null,
+            null as D3Tree | null,
             {
                 setStats: (_, { stats }) => stats,
             },
@@ -17,8 +18,8 @@ export const logic = kea<logicType>({
     listeners: ({ actions }) => ({
         loadStats: async () => {
             const response = await fetch('/bundle.json')
-            const bundle = await response.json()
-            actions.setStats(bundle)
+            const stats = await response.json()
+            actions.setStats(stats)
         },
     }),
     events: ({ actions }) => ({
