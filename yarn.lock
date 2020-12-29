@@ -7045,10 +7045,10 @@ kea-router@^0.5.1:
   dependencies:
     url-pattern "^1.0.3"
 
-kea-typegen@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/kea-typegen/-/kea-typegen-0.4.0.tgz#43807b764feda5363b0d7c34957a50a4c54086e6"
-  integrity sha512-YsbBvrL1z0Z20dwecsc3RFV3PakhOedPRqme1yvOsM1sU28km8KJoWviDpq1Zv3yXLjsa3gFg0Dg9RIB/maD/Q==
+kea-typegen@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/kea-typegen/-/kea-typegen-0.4.1.tgz#a9c5bb9a527a07cd1bd5c1b8d685914a0c1b5650"
+  integrity sha512-NtYj6nHkhms60KIryQT3EqTQRG/RSBON9LmTYIk4InlHhxnQw8YeYl6VsltgvwRgDzfkFTpwxtO/vV5ezfFZQA==
   dependencies:
     "@wessberg/ts-clone-node" "0.3.8"
     prettier "^2.0.5"

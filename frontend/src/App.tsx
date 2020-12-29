@@ -1,11 +1,11 @@
 import './App.css'
 import { useValues } from 'kea'
-import { logic } from './logic'
-import { TreeMap } from './TreeMap'
+import { treeLogic } from './tree/treeLogic'
+import { TreeMap } from './tree/TreeMap'
 
 function App() {
-    const { stats } = useValues(logic)
-    return <div className="App">{stats ? <TreeMap stats={stats} /> : null}</div>
+    const { cleanStats } = useValues(treeLogic)
+    return <div className="App">{cleanStats ? <TreeMap stats={cleanStats} /> : null}</div>
 }
 
 export default App

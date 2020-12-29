@@ -1,4 +1,4 @@
-import { D3Tree } from './types'
+import { D3Tree } from '../types'
 
 export function TreeMap({ stats, level = 0 }: { stats: D3Tree; level?: number }) {
     return (
