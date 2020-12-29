@@ -3,12 +3,12 @@
         display: block;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.1);
         overflow: hidden;
         position: absolute;
     
         &.node-modules {
-            background: rgba(0,255,0,0.1);
+            background: rgba(180,255,180,0.1);
         }
         // .tree-heading {
     

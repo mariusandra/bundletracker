@@ -1,16 +1,16 @@
-import './styles.scss'
+import './TreeScene.scss'
 import { useValues } from 'kea'
 import { treeLogic } from './treeLogic'
 import { TreeMap } from './TreeMap'
 
 export function TreeScene() {
-    const { cleanStats, windowWidth, windowHeight } = useValues(treeLogic)
-    console.log(cleanStats)
+    const { treeWithCoords } = useValues(treeLogic)
+    console.log(treeWithCoords)
     return (
         <div className="tree-scene">
-            {cleanStats && windowWidth && windowHeight ? (
+            {treeWithCoords ? (
                 <div style={{ padding: 10, position: 'relative' }}>
-                    <TreeMap node={cleanStats} x={0} y={0} />
+                    <TreeMap node={treeWithCoords} x={0} y={0} />
                 </div>
             ) : null}
         </div>

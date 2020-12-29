@@ -1,25 +1,25 @@
 import { kea } from 'kea'
 import { treeLogicType } from './treeLogicType'
-import { D3Tree } from '../../types'
+import { APITreeNode, TreeCoords, TreeNode } from './types'
 import squarify from 'squarify'
 
-export const treeLogic = kea<treeLogicType<D3Tree>>({
+export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords>>({
     actions: {
         loadStats: true,
-        setStats: (stats: D3Tree) => ({ stats }),
+        setStatsResponse: (statsResponse: APITreeNode) => ({ statsResponse }),
     },
     listeners: ({ actions }) => ({
         loadStats: async () => {
             const response = await fetch('/bundle.json')
             const stats = await response.json()
-            actions.setStats(stats)
+            actions.setStatsResponse(stats)
         },
     }),
     reducers: {
-        stats: [
-            null as D3Tree | null,
+        statsResponse: [
+            null as APITreeNode | null,
             {
-                setStats: (_, { stats }) => stats,
+                setStatsResponse: (_, { statsResponse }) => statsResponse,
             },
         ],
     },
@@ -28,36 +28,58 @@ export const treeLogic = kea<treeLogicType<D3Tree>>({
         windowHeight: (window) => window.innerHeight,
     },
     selectors: {
-        cleanStats: [
-            (s) => [s.stats, s.windowWidth, s.windowHeight],
-            (rawStats, windowWidth, windowHeight) => {
-                if (!rawStats || !windowWidth || !windowHeight) {
+        treeWithValues: [
+            (s) => [s.statsResponse],
+            (statsResponse) => {
+                function addIntermediateValues(child: APITreeNode): TreeNode {
+                    if (typeof child.value !== 'undefined') {
+                        return child as TreeNode
+                    }
+                    const children = child.children.map(addIntermediateValues)
+                    const value = children.reduce((sum, child) => sum + (child.value || 0), 0)
+                    return {
+                        ...child,
+                        children,
+                        value,
+                    }
+                }
+                return statsResponse ? addIntermediateValues(statsResponse) : null
+            },
+        ],
+
+        windowCoords: [
+            (s) => [s.windowWidth, s.windowHeight],
+            (windowWidth, windowHeight) => {
+                if (!windowWidth || !windowHeight) {
                     return null
                 }
-                function sumStats(child: D3Tree): D3Tree {
-                    if (child.children.length > 0) {
-                        child.children = child.children.map(sumStats)
-                        child.value = child.children.map((c) => c.value).reduce((p, c) => (p || 0) + (c || 0), 0)
+                return { x0: 0, y0: 0, x1: windowWidth, y1: windowHeight } as TreeCoords
+            },
+        ],
+
+        treeWithCoords: [
+            (s) => [s.treeWithValues, s.windowCoords],
+            (treeWithValues, windowCoords) => {
+                if (!treeWithValues || !windowCoords) {
+                    return null
+                }
+
+                function setCoords(node: TreeNode, coords: TreeCoords, level: number) {
+                    const squarified = squarify(
+                        // get just one layer
+                        node.children.map(({ value }) => ({ value })),
+                        // pre-given coords as the boundary
+                        coords
+                    )
+
+                    return {
+                        ...node,
+                        coords,
+                        children: node.children.map((child, index) => setCoords(child, squarified[index], level + 1)),
                     }
-                    return child
-                }
-                const stats = sumStats(rawStats)
-                stats.coords = { x0: 0, y0: 0, x1: windowWidth, y1: windowHeight }
-
-                function getDimensions(child: D3Tree) {
-                    squarify(
-                        child.children.map(({ value }, index) => ({ value, index })),
-                        child.coords
-                    ).forEach(({ index, x0, x1, y0, y1 }) => {
-                        child.children[index].coords = { x0, x1, y0, y1 }
-                    })
-
-                    child.children = child.children.map((c) => getDimensions(c))
-
-                    return child
                 }
 
-                return getDimensions(stats)
+                return setCoords(treeWithValues, windowCoords, 0)
             },
         ],
     },

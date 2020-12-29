@@ -1,7 +1,6 @@
-import './styles.scss'
-import { D3Tree } from '../../types'
+import { TreeNode } from './types'
 interface TreeMapProps {
-    node: D3Tree
+    node: TreeNode
     level?: number
     path?: string
     x: number
