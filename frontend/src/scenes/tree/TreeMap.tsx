@@ -6,7 +6,6 @@ interface TreeMapProps {
     path?: string
     x: number
     y: number
-    hueIndex: number
     hoverPath: string
 }
 
@@ -20,7 +19,7 @@ function getColor(level: number, path: string, hueIndex: number, hover: boolean)
     return `hsl(${hsl[0]}deg ${hsl[1]}% ${hsl[2]}%)`
 }
 
-export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hueIndex = 0, hoverPath }: TreeMapProps) {
+export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hoverPath }: TreeMapProps) {
     const rootPath = path ? `${path}/${node.name}` : node.name
     const { x0, x1, y0, y1 } = node.coords
 
@@ -40,7 +39,7 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hueIndex = 0
                 height: y1 - y0,
                 left: x0 - x,
                 top: y0 - y,
-                background: getColor(level, rootPath, hueIndex, pathHover),
+                background: getColor(level, rootPath, node.hueIndex, pathHover),
             }}
             data-path={rootPath}
         >
@@ -56,7 +55,6 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hueIndex = 0
                     path={rootPath}
                     x={x0}
                     y={y0}
-                    hueIndex={i + hueIndex}
                 />
             ))}
         </div>

@@ -9,6 +9,7 @@ export interface TreeNode {
     value: number
     children: TreeNode[]
     coords?: TreeCoords
+    hueIndex: number
 }
 
 export interface TreeCoords {

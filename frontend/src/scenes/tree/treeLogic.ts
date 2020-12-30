@@ -52,17 +52,18 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
         treeWithValues: [
             (s) => [s.statsResponse],
             (statsResponse) => {
-                function addIntermediateValues(child: APITreeNode): TreeNode {
-                    if (typeof child.value !== 'undefined') {
-                        return child as TreeNode
+                function addIntermediateValues(node: APITreeNode): TreeNode {
+                    if (typeof node.value !== 'undefined') {
+                        return { ...node, hueIndex: 0 } as TreeNode
                     }
-                    const children = child.children.map(addIntermediateValues)
+                    const children = node.children.map(addIntermediateValues)
                     const value = children.reduce((sum, child) => sum + (child.value || 0), 0)
                     return {
-                        ...child,
+                        ...node,
                         children,
                         value,
-                    }
+                        hueIndex: 0,
+                    } as TreeNode
                 }
                 return statsResponse ? addIntermediateValues(statsResponse) : null
             },
@@ -85,7 +86,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                     return null
                 }
 
-                function setCoords(node: TreeNode, coords: TreeCoords, level: number) {
+                function setCoords(node: TreeNode, coords: TreeCoords, level: number, hueIndex: number) {
                     const x0 = coords.x0 + (level === 0 ? 0 : margin)
                     const x1 = coords.x1 - (level === 0 ? 0 : margin)
                     const y0 = coords.y0 + (level === 0 ? 0 : margin)
@@ -113,6 +114,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                                           name: '*OTHER*',
                                           value: excludedValue,
                                           children: [],
+                                          hueIndex: 0,
                                       },
                                   ]
                                 : includedChildren
@@ -128,17 +130,18 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                         )
 
                         combinedChildren = combinedChildren
-                            .map((child, index) => setCoords(child, squarified[index], level + 1))
+                            .map((child, index) => setCoords(child, squarified[index], level + 1, hueIndex + index))
                             .filter((c) => c)
                     }
                     return {
                         ...node,
                         coords: { x0, x1, y0, y1 },
                         children: combinedChildren,
+                        hueIndex,
                     }
                 }
 
-                return setCoords(treeWithValues, windowCoords, 0)
+                return setCoords(treeWithValues, windowCoords, 0, 0)
             },
         ],
     },

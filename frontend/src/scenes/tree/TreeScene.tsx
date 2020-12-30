@@ -24,13 +24,13 @@ export function TreeScene() {
         }
         window.addEventListener('mousemove', onMove)
         return () => window.removeEventListener('mousemove', onMove)
-    }, [])
+    }, []) // eslint-disable-line
 
     return (
         <div className="tree-scene">
             {treeWithCoords ? (
                 <div style={{ padding: 10, position: 'relative' }}>
-                    <TreeMap node={treeWithCoords} x={0} y={0} hueIndex={0} hoverPath={hoverPath} />
+                    <TreeMap node={treeWithCoords} x={0} y={0} hoverPath={hoverPath} />
                 </div>
             ) : null}
             {showDials && <Dials />}
