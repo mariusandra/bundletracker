@@ -12,18 +12,26 @@ export function TreeScene() {
     const { setHoverPath } = useActions(treeLogic)
 
     useEffect(() => {
-        function onMove(e: MouseEvent) {
-            let target = e.target as HTMLElement
+        function getPath(target: HTMLElement) {
             if (target.className.includes('tree-heading')) {
                 const path = target?.parentElement?.dataset?.['path'] || null
-                console.log(path)
-                setHoverPath(path)
+                return path
             } else {
-                setHoverPath(null)
+                return null
             }
         }
+        function onMove(e: MouseEvent) {
+            setHoverPath(getPath(e.target as HTMLElement))
+        }
+        function onClick(e: MouseEvent) {
+            console.log(getPath(e.target as HTMLElement))
+        }
         window.addEventListener('mousemove', onMove)
-        return () => window.removeEventListener('mousemove', onMove)
+        window.addEventListener('mousedown', onClick)
+        return () => {
+            window.removeEventListener('mousemove', onMove)
+            window.removeEventListener('mousedown', onClick)
+        }
     }, []) // eslint-disable-line
 
     return (
