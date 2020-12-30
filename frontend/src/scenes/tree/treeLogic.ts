@@ -3,7 +3,7 @@ import { treeLogicType } from './treeLogicType'
 import { APITreeNode, TreeCoords, TreeNode, Dials } from './types'
 import squarify from 'squarify'
 
-const defaultDials: Dials = { padding: 0, paddingTop: 14, margin: 4, minWidth: 20, minHeight: 20 }
+const defaultDials: Dials = { padding: 0, paddingTop: 14, margin: 4, minWidth: 20, minHeight: 32 }
 
 export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Dials>>({
     actions: {
