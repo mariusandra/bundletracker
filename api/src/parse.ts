@@ -74,7 +74,7 @@ export function convertToD3Tree(filesAndSizes: Map<string, number>) {
 }
 
 export function simplifyD3Tree(tree: D3Tree): D3Tree {
-    if (tree.children.length === 1) {
+    if (tree.children.length === 1 && tree.name !== 'node_modules') {
         tree.children[0].name = `${tree.name}/${tree.children[0].name}`
         return tree.children[0]
     } else {
