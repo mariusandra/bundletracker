@@ -1,4 +1,5 @@
 import { TreeNode } from './types'
+import { humanFileSize } from './utils'
 interface TreeMapProps {
     node: TreeNode
     level?: number
@@ -60,7 +61,7 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0 }: TreeMapPro
             }}
         >
             <div className="tree-heading">
-                {node.name} {node.value}
+                {node.name} {humanFileSize(node.value)}
             </div>
             {node.children.map((child) => (
                 <TreeMap node={child} key={child.name} level={level + 1} path={rootPath} x={x0} y={y0} />

@@ -16,7 +16,15 @@ export function Dials() {
                 />
             </div>
             <div>
-                <label>Padding: {dials.padding}</label>
+                <label>Top padding: {dials.paddingTop}</label>
+                <input
+                    type="range"
+                    value={dials.paddingTop}
+                    onChange={(e) => setDials({ paddingTop: parseInt(e.target.value) })}
+                />
+            </div>
+            <div>
+                <label>Other padding: {dials.padding}</label>
                 <input
                     type="range"
                     value={dials.padding}

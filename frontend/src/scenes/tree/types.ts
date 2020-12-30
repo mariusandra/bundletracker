@@ -20,6 +20,7 @@ export interface TreeCoords {
 
 export interface Dials {
     padding: number
+    paddingTop: number
     margin: number
     minWidth: number
     minHeight: number

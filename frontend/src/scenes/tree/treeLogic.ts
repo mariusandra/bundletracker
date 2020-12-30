@@ -3,17 +3,24 @@ import { treeLogicType } from './treeLogicType'
 import { APITreeNode, TreeCoords, TreeNode, Dials } from './types'
 import squarify from 'squarify'
 
+const defaultDials: Dials = { padding: 0, paddingTop: 14, margin: 4, minWidth: 20, minHeight: 20 }
+
 export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Dials>>({
     actions: {
         loadStats: true,
         setStatsResponse: (statsResponse: APITreeNode) => ({ statsResponse }),
         setDials: (dials: Partial<Dials>) => ({ dials }),
+        setDialsDebounced: (dials: Partial<Dials>) => ({ dials }),
     },
     listeners: ({ actions }) => ({
         loadStats: async () => {
             const response = await fetch('/bundle.json')
             const stats = await response.json()
             actions.setStatsResponse(stats)
+        },
+        setDials: async ({ dials }, breakpoint) => {
+            await breakpoint(10)
+            actions.setDialsDebounced(dials)
         },
     }),
     reducers: {
@@ -24,9 +31,9 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
             },
         ],
         dials: [
-            { padding: 10, margin: 10, minWidth: 10, minHeight: 10 } as Dials,
+            defaultDials,
             {
-                setDials: (state, { dials }) => ({ ...state, ...dials }),
+                setDialsDebounced: (state, { dials }) => ({ ...state, ...dials }),
             },
         ],
     },
@@ -66,22 +73,23 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
 
         treeWithCoords: [
             (s) => [s.treeWithValues, s.windowCoords, s.dials],
-            (treeWithValues, windowCoords, { margin, padding, minWidth, minHeight }) => {
+            (treeWithValues, windowCoords, { margin, padding, paddingTop, minWidth, minHeight }) => {
                 if (!treeWithValues || !windowCoords) {
                     return null
                 }
 
                 function setCoords(node: TreeNode, coords: TreeCoords, level: number) {
-                    const x0 = coords.x0 + (level === 0 ? 0 : margin / 2)
-                    const x1 = coords.x1 - (level === 0 ? 0 : margin / 2)
-                    const y0 = coords.y0 + (level === 0 ? 0 : margin / 2)
-                    const y1 = coords.y1 - (level === 0 ? 0 : margin / 2)
+                    const x0 = coords.x0 + (level === 0 ? 0 : margin)
+                    const x1 = coords.x1 - (level === 0 ? 0 : margin)
+                    const y0 = coords.y0 + (level === 0 ? 0 : margin)
+                    const y1 = coords.y1 - (level === 0 ? 0 : margin)
 
                     let combinedChildren: TreeNode[] = []
                     if (x1 > x0 && y1 > y0 && coords.x1 - coords.x0 >= minWidth && coords.y1 - coords.y0 >= minHeight) {
                         const area = (x1 - x0) * (y1 - y0)
 
-                        const minimalAreaforChild = (minWidth + padding + margin) * (minHeight + padding + margin)
+                        const minimalAreaforChild =
+                            (minWidth + padding * 2 + margin * 2) * (minHeight + padding + paddingTop + margin * 2)
                         const minimalValueForChild = node.value * (minimalAreaforChild / area)
 
                         const includedChildren =
@@ -105,10 +113,10 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                         const squarified = squarify(
                             combinedChildren.map(({ value }) => ({ value })), // don't pass children to squarify!
                             {
-                                x0: x0 + padding / 2,
-                                x1: x1 - padding / 2,
-                                y0: y0 + padding / 2,
-                                y1: y1 - padding / 2,
+                                x0: x0 + padding,
+                                x1: x1 - padding,
+                                y0: y0 + paddingTop,
+                                y1: y1 - padding,
                             }
                         )
 
