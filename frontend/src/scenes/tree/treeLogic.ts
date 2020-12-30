@@ -11,6 +11,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
         setStatsResponse: (statsResponse: APITreeNode) => ({ statsResponse }),
         setDials: (dials: Partial<Dials>) => ({ dials }),
         setDialsDebounced: (dials: Partial<Dials>) => ({ dials }),
+        setHoverPath: (path: string | null) => ({ path }),
     },
     listeners: ({ actions }) => ({
         loadStats: async () => {
@@ -34,6 +35,12 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
             defaultDials,
             {
                 setDialsDebounced: (state, { dials }) => ({ ...state, ...dials }),
+            },
+        ],
+        hoverPath: [
+            null as string | null,
+            {
+                setHoverPath: (_, { path }) => path,
             },
         ],
     },
