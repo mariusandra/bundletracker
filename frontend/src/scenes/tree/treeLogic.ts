@@ -1,12 +1,13 @@
 import { kea } from 'kea'
 import { treeLogicType } from './treeLogicType'
-import { APITreeNode, TreeCoords, TreeNode } from './types'
+import { APITreeNode, TreeCoords, TreeNode, Dials } from './types'
 import squarify from 'squarify'
 
-export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords>>({
+export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Dials>>({
     actions: {
         loadStats: true,
         setStatsResponse: (statsResponse: APITreeNode) => ({ statsResponse }),
+        setDials: (dials: Partial<Dials>) => ({ dials }),
     },
     listeners: ({ actions }) => ({
         loadStats: async () => {
@@ -20,6 +21,12 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords>>({
             null as APITreeNode | null,
             {
                 setStatsResponse: (_, { statsResponse }) => statsResponse,
+            },
+        ],
+        dials: [
+            { padding: 10, margin: 10, minWidth: 10, minHeight: 10 } as Dials,
+            {
+                setDials: (state, { dials }) => ({ ...state, ...dials }),
             },
         ],
     },
@@ -58,24 +65,61 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords>>({
         ],
 
         treeWithCoords: [
-            (s) => [s.treeWithValues, s.windowCoords],
-            (treeWithValues, windowCoords) => {
+            (s) => [s.treeWithValues, s.windowCoords, s.dials],
+            (treeWithValues, windowCoords, { margin, padding, minWidth, minHeight }) => {
                 if (!treeWithValues || !windowCoords) {
                     return null
                 }
 
                 function setCoords(node: TreeNode, coords: TreeCoords, level: number) {
-                    const squarified = squarify(
-                        // get just one layer
-                        node.children.map(({ value }) => ({ value })),
-                        // pre-given coords as the boundary
-                        coords
-                    )
+                    const x0 = coords.x0 + (level === 0 ? 0 : margin / 2)
+                    const x1 = coords.x1 - (level === 0 ? 0 : margin / 2)
+                    const y0 = coords.y0 + (level === 0 ? 0 : margin / 2)
+                    const y1 = coords.y1 - (level === 0 ? 0 : margin / 2)
 
+                    let combinedChildren: TreeNode[] = []
+                    if (x1 > x0 && y1 > y0 && coords.x1 - coords.x0 >= minWidth && coords.y1 - coords.y0 >= minHeight) {
+                        const area = (x1 - x0) * (y1 - y0)
+
+                        const minimalAreaforChild = (minWidth + padding + margin) * (minHeight + padding + margin)
+                        const minimalValueForChild = node.value * (minimalAreaforChild / area)
+
+                        const includedChildren =
+                            minimalAreaforChild > 0
+                                ? node.children.filter(({ value }) => value >= minimalValueForChild)
+                                : []
+                        const excludedValue = node.value - includedChildren.reduce((sum, { value }) => sum + value, 0)
+
+                        combinedChildren =
+                            excludedValue > 0 && includedChildren.length > 0 && excludedValue > minimalValueForChild
+                                ? [
+                                      ...includedChildren,
+                                      {
+                                          name: '*OTHER*',
+                                          value: excludedValue,
+                                          children: [],
+                                      },
+                                  ]
+                                : includedChildren
+
+                        const squarified = squarify(
+                            combinedChildren.map(({ value }) => ({ value })), // don't pass children to squarify!
+                            {
+                                x0: x0 + padding / 2,
+                                x1: x1 - padding / 2,
+                                y0: y0 + padding / 2,
+                                y1: y1 - padding / 2,
+                            }
+                        )
+
+                        combinedChildren = combinedChildren
+                            .map((child, index) => setCoords(child, squarified[index], level + 1))
+                            .filter((c) => c)
+                    }
                     return {
                         ...node,
-                        coords,
-                        children: node.children.map((child, index) => setCoords(child, squarified[index], level + 1)),
+                        coords: { x0, x1, y0, y1 },
+                        children: combinedChildren,
                     }
                 }
 

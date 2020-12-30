@@ -2,6 +2,7 @@ import './TreeScene.scss'
 import { useValues } from 'kea'
 import { treeLogic } from './treeLogic'
 import { TreeMap } from './TreeMap'
+import { Dials } from './Dials'
 
 export function TreeScene() {
     const { treeWithCoords } = useValues(treeLogic)
@@ -13,6 +14,7 @@ export function TreeScene() {
                     <TreeMap node={treeWithCoords} x={0} y={0} />
                 </div>
             ) : null}
+            <Dials />
         </div>
     )
 }

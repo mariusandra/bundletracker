@@ -17,3 +17,10 @@ export interface TreeCoords {
     x1: number
     y1: number
 }
+
+export interface Dials {
+    padding: number
+    margin: number
+    minWidth: number
+    minHeight: number
+}
