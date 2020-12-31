@@ -16,6 +16,10 @@ app.get('/bundle.json', (req, res) => {
     res.json(d3Tree)
 })
 
+app.post('/upload', (req, res) => {
+    res.json({ success: true })
+})
+
 app.listen(port, () => {
     console.log(`BundleTracker API listening at http://localhost:${port}`)
 })
