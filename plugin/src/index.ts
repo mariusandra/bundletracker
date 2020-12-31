@@ -1,3 +1,4 @@
+import fetch from 'node-fetch'
 import { getFilesAndSizes, convertToTree } from '../../api/src/parse'
 
 // Adapted from:
@@ -72,8 +73,26 @@ export class BundleTrackerPlugin {
                 const filesAndSizes = getFilesAndSizes(stats.modules)
                 const tree = convertToTree(filesAndSizes)
 
-                console.log(tree)
-                debugger
+                const url = `${this.opts.host}/upload`
+
+                try {
+                    fetch(url, {
+                        method: 'POST',
+                        body: JSON.stringify({ tree }),
+                        headers: { 'Content-Type': 'application/json' },
+                    })
+                        .then((res) => res.json())
+                        .then((res) => {
+                            if (res.message) {
+                                console.log(res.message)
+                            } else {
+                                console.log(res)
+                            }
+                        })
+                } catch (error) {
+                    console.error('Error uploading stats to BundleTracker')
+                    console.error(error)
+                }
             })
             .catch((e) => {
                 err = e
