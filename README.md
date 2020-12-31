@@ -16,13 +16,7 @@ Add it to your CI pipeline and have an instant x-ray into your deployed code.
 
 Use the communal app.bundletracker.io server, where links expire in 7 days, or self-host your own.
 
-# Current status
-
-- Add webpack stats to `assets/stats.json` and run `yarn start` to see a treemap.
-- That's it. What follows is how it should work.
-
-
-# Installing the plugin (not yet though)
+# Installing the plugin
 
 ```sh
 yarn add @bundletracker/plugin
@@ -37,14 +31,23 @@ module.exports = {
     ...,
     plugins: [
         new BundleTrackerPlugin({
-            // uploadStats: process.env.NODE_ENV == 'production',
+            // uploadStats: process.env.NODE_ENV === 'production',
             // host: 'https://app.bundletracker.io',
         }),
     ],
 }
 ```
 
-# Installing the server (also not yet)
+Build your bundle as you normally would and visit the emitted URL to see inside:
+
+```sh
+$ yarn webpack:build
+📦 Bundle Tracked: http://localhost:4001/b/ckjd1itea0022jsv0fftmls7l
+```
+
+# Installing the server (not yet)
+
+This does not *yet* work.
 
 ```sh
 npm install -g @bundletracker/server
