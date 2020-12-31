@@ -1,3 +1,6 @@
+import { getFilesAndSizes, convertToTree } from '../../api/src/parse'
+
+// Adapted from:
 // https://raw.githubusercontent.com/FormidableLabs/webpack-stats-plugin/main/lib/stats-writer-plugin.js
 
 interface Options {
@@ -66,7 +69,10 @@ export class BundleTrackerPlugin {
         let err
         return Promise.resolve()
             .then(() => {
-                console.log(stats)
+                const filesAndSizes = getFilesAndSizes(stats.modules)
+                const tree = convertToTree(filesAndSizes)
+
+                console.log(tree)
                 debugger
             })
             .catch((e) => {

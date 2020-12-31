@@ -10,9 +10,9 @@ const port = process.env.BUNDLETRACKER_PORT || 4001
 app.get('/bundle.json', (req, res) => {
     const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../../assets/stats.json')).toString())
     const filesAndSizes = getFilesAndSizes(json.modules)
-    const d3Tree = convertToTree(filesAndSizes)
+    const tree = convertToTree(filesAndSizes)
 
-    res.json(d3Tree)
+    res.json(tree)
 })
 
 app.post('/upload', (req, res) => {

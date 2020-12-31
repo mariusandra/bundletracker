@@ -1,5 +1,6 @@
 {
     "name": "@bundletracker/plugin",
+    "main": "dist/plugin/src/index.js",
     "version": "0.1.0",
     "private": true,
     "scripts": {
