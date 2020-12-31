@@ -1,16 +1,18 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/frontend/node_modules
-/api/node_modules
-/plugin/node_modules
-/plugin/dist
 /.pnp
 .pnp.js
-
+/node_modules
+/frontend/node_modules
+/server/node_modules
+/plugin/node_modules
+/plugin/dist
+/server/dist
 /frontend/types
-/api/.env
+/frontend/build
+/server/.env
+/server/public
 
 # testing
 /coverage

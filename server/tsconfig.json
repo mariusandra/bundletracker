@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "outDir": "./dist",
     "types": [
       "node",
@@ -19,8 +19,6 @@
     "resolveJsonModule": true,
     "strict": true,
     "lib": [
-      "dom",
-      "dom.iterable",
       "esnext"
     ],
     "skipLibCheck": true,
@@ -28,8 +26,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
   },
   "exclude": [
     "node_modules",

@@ -10,8 +10,14 @@ const port = process.env.PORT || 4001
 const siteUrl = process.env.SITE_URL || `http://localhost:${port}`
 
 async function main() {
+    const bundleCount = await prisma.bundle.count()
+    console.log(`🟢 ${bundleCount} bundles in the database!`)
+
     app.use(express.json({ limit: '20mb' }))
-    // app.use(express.static('public'))
+
+    // if (fs.existsSync(path.join(__dirname, '../public'))) {
+    app.use(express.static('public'))
+    // }
 
     app.get('/bundle.json', (req, res) => {
         const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../../assets/stats.json')).toString())
@@ -51,7 +57,7 @@ async function main() {
     })
 
     app.listen(port, () => {
-        console.log(`🟢 BundleTracker API listening at ${siteUrl}`)
+        console.log(`🟢 BundleTracker Server listening at ${siteUrl}`)
     })
 }
 main()
