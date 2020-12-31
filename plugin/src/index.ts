@@ -1,6 +1,8 @@
-'use strict'
-
 // https://raw.githubusercontent.com/FormidableLabs/webpack-stats-plugin/main/lib/stats-writer-plugin.js
+
+interface Options {
+    host: string
+}
 
 /**
  * Bundle Tracker Plugin
@@ -10,19 +12,21 @@
  *
  * @api public
  */
-class BundleTrackerPlugin {
-    constructor(opts) {
-        opts = opts || {}
-        this.opts = {}
-        this.opts.host = opts.host || 'https://app.bundletracker.io'
+export class BundleTrackerPlugin {
+    opts: Options
+
+    constructor(opts: Partial<Options> = {}) {
+        this.opts = {
+            host: opts.host || 'https://app.bundletracker.io',
+        }
     }
 
-    apply(compiler) {
+    apply(compiler: any) {
         if (compiler.hooks) {
             let emitHookSet = false
 
             // Capture the compilation and then set up further hooks.
-            compiler.hooks.thisCompilation.tap('stats-writer-plugin', (compilation) => {
+            compiler.hooks.thisCompilation.tap('stats-writer-plugin', (compilation: any) => {
                 if (compilation.hooks.processAssets) {
                     // Modern: `processAssets` is one of the last hooks before frozen assets.
                     // We choose `PROCESS_ASSETS_STAGE_REPORT` which is the last possible
@@ -55,7 +59,7 @@ class BundleTrackerPlugin {
         }
     }
 
-    emitStats(curCompiler, callback) {
+    emitStats(curCompiler: any, callback?: any) {
         let stats = curCompiler.getStats().toJson()
 
         // Transform to string.
@@ -75,5 +79,3 @@ class BundleTrackerPlugin {
             })
     }
 }
-
-module.exports = { BundleTrackerPlugin }

@@ -4,6 +4,8 @@
 /node_modules
 /frontend/node_modules
 /api/node_modules
+/plugin/node_modules
+/plugin/dist
 /.pnp
 .pnp.js
 

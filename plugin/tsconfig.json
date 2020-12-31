@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "types": [
+      "node",
+      "jest"
+    ],
+    "resolveJsonModule": true,
+    "strict": true,
+    "lib": [
+      "esnext"
+    ],
+    "skipLibCheck": true,
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "bin"
+  ],
+  "include": [
+    "src"
+  ]
+}
