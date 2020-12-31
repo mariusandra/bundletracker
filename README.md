@@ -57,3 +57,7 @@ bundletracker-server
 ```
 
 You can pass config either via env (`DATABASE_URL`) or cli arguments (`--database-url`).
+
+# Future plans
+
+- Track changes in your bundles over time
