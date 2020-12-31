@@ -3,6 +3,7 @@ const { exec } = require('child_process')
 const path = require('path')
 async function main() {
     const prismaPath = path.resolve(__dirname, '../node_modules/.bin/prisma')
+    const schemaPath = path.resolve(__dirname, '../prisma/schema.prisma')
     const runCommand = (command) =>
         new Promise((resolve, reject) => {
             exec(command, (error, stdout, stderr) => {
@@ -18,7 +19,7 @@ async function main() {
         })
 
     console.log('📙 Running Prisma Migrations')
-    await runCommand(`${prismaPath} migrate deploy --preview-feature`)
+    await runCommand(`${prismaPath} migrate deploy --schema ${schemaPath} --preview-feature`)
 
     require(__dirname + '/../dist/server.js')
 }
