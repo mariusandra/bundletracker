@@ -12,7 +12,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
         setDials: (dials: Partial<Dials>) => ({ dials }),
         setDialsDebounced: (dials: Partial<Dials>) => ({ dials }),
         setHoverPath: (path: string | null) => ({ path }),
-        setRoot: (root: string) => ({ root }),
+        setRootHue: (root: string, hue: number) => ({ root, hue }),
     },
     listeners: ({ actions }) => ({
         loadStats: async () => {
@@ -42,22 +42,29 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
             null as string | null,
             {
                 setHoverPath: (_, { path }) => path,
+                setRootHue: () => null,
             },
         ],
         root: [
             '',
             {
-                setRoot: (_, { root }) => root,
+                setRootHue: (_, { root }) => root,
+            },
+        ],
+        hue: [
+            0,
+            {
+                setRootHue: (_, { hue }) => hue,
             },
         ],
     },
     actionToUrl: () => ({
-        setRoot: ({ root }) => ['/', { root }],
+        setRootHue: ({ root, hue }) => ['/', root || hue ? { root, hue } : {}],
     }),
     urlToAction: ({ actions, values }) => ({
-        '/': (_, { root }) => {
-            if ((values.root || '') !== (root || '')) {
-                actions.setRoot(root || '')
+        '/': (_, { root = '', hue = '0' }) => {
+            if (values.root !== root || values.hue !== parseInt(hue)) {
+                actions.setRootHue(root, parseInt(hue))
             }
         },
     }),
@@ -124,8 +131,8 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
         ],
 
         treeWithCoords: [
-            (s) => [s.simplifiedTree, s.windowCoords, s.dials],
-            (tree, windowCoords, { margin, padding, paddingTop, minWidth, minHeight }) => {
+            (s) => [s.simplifiedTree, s.windowCoords, s.dials, s.hue],
+            (tree, windowCoords, { margin, padding, paddingTop, minWidth, minHeight }, hue) => {
                 if (!tree || !windowCoords) {
                     return null
                 }
@@ -185,7 +192,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                     }
                 }
 
-                return setCoords(tree, windowCoords, 0, 0)
+                return setCoords(tree, windowCoords, 0, hue)
             },
         ],
     },

@@ -42,6 +42,7 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hoverPath }:
                 background: getColor(level, rootPath, node.hueIndex, pathHover),
             }}
             data-path={rootPath}
+            data-hue={node.hueIndex}
         >
             <div className="tree-heading">
                 {node.name} {humanFileSize(node.value)}

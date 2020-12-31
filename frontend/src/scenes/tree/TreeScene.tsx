@@ -9,7 +9,7 @@ const showDials = false
 
 export function TreeScene() {
     const { hoverPath, treeWithCoords, root } = useValues(treeLogic)
-    const { setHoverPath, setRoot } = useActions(treeLogic)
+    const { setHoverPath, setRootHue } = useActions(treeLogic)
 
     useEffect(() => {
         function getPath(target: HTMLElement) {
@@ -20,12 +20,20 @@ export function TreeScene() {
                 return null
             }
         }
+        function getHue(target: HTMLElement) {
+            if (target.className.includes('tree-heading')) {
+                const hue = target?.parentElement?.dataset?.['hue'] || null
+                return hue ? parseInt(hue) : 0
+            } else {
+                return 0
+            }
+        }
         function onMove(e: MouseEvent) {
             setHoverPath(getPath(e.target as HTMLElement))
         }
         function onClick(e: MouseEvent) {
             if (e.button === 0) {
-                setRoot(getPath(e.target as HTMLElement))
+                setRootHue(getPath(e.target as HTMLElement), getHue(e.target as HTMLElement))
             }
         }
         window.addEventListener('mousemove', onMove)
