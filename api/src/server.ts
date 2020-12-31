@@ -5,6 +5,8 @@ import { convertToTree, getFilesAndSizes } from './parse'
 
 const app = express()
 const port = process.env.BUNDLETRACKER_PORT || 4001
+
+app.use(express.json({ limit: '20mb' }))
 // app.use(express.static('public'))
 
 app.get('/bundle.json', (req, res) => {
@@ -16,7 +18,12 @@ app.get('/bundle.json', (req, res) => {
 })
 
 app.post('/upload', (req, res) => {
-    res.json({ success: true })
+    try {
+        console.log(req.body)
+        res.json({ success: true })
+    } catch (error) {
+        res.json({ success: false, message: 'Error Storing JSON!' })
+    }
 })
 
 app.listen(port, () => {
