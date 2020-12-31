@@ -1,5 +1,6 @@
 import fetch from 'node-fetch'
 import { getFilesAndSizes, convertToTree } from '../../api/src/parse'
+import { version } from '../package.json'
 
 // Adapted from:
 // https://raw.githubusercontent.com/FormidableLabs/webpack-stats-plugin/main/lib/stats-writer-plugin.js
@@ -79,13 +80,18 @@ export class BundleTrackerPlugin {
             .then(() => {
                 const filesAndSizes = getFilesAndSizes(stats.modules)
                 const tree = convertToTree(filesAndSizes)
+                const meta = {
+                    pluginVersion: version,
+                    webpackVersion: stats.version,
+                    hash: stats.hash,
+                }
 
                 const url = `${this.opts.host}/upload`
 
                 try {
                     fetch(url, {
                         method: 'POST',
-                        body: JSON.stringify({ tree }),
+                        body: JSON.stringify({ tree, meta }),
                         headers: { 'Content-Type': 'application/json' },
                     })
                         .then((res) => res.json())
@@ -97,7 +103,7 @@ export class BundleTrackerPlugin {
                             }
                         })
                 } catch (error) {
-                    console.error('Error uploading stats to BundleTracker')
+                    console.error('🔴 Error uploading stats to BundleTracker')
                     console.error(error)
                 }
             })
