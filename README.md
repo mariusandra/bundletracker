@@ -31,7 +31,7 @@ npm install --save-dev @bundletracker/plugin
 
 ```js
 // webpack.config.js
-const BundleTrackerPlugin = require('@bundletracker/plugin')
+const { BundleTrackerPlugin } = require('@bundletracker/plugin')
 
 module.exports = {
     ...,

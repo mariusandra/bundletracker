@@ -4,7 +4,8 @@ import express from 'express'
 import { convertToTree, getFilesAndSizes } from './parse'
 
 const app = express()
-const port = process.env.BUNDLETRACKER_PORT || 4001
+const port = process.env.PORT || 4001
+const siteUrl = process.env.SITE_URL || `http://localhost:${port}`
 
 app.use(express.json({ limit: '20mb' }))
 // app.use(express.static('public'))
@@ -27,5 +28,5 @@ app.post('/upload', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`BundleTracker API listening at http://localhost:${port}`)
+    console.log(`BundleTracker API listening at ${siteUrl}`)
 })
