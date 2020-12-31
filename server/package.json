@@ -9,7 +9,10 @@
         "build:prisma": "prisma generate",
         "build:backend": "tsc -p .",
         "build:frontend": "cd ../frontend && yarn build && rm -rf ../server/public && cp -a build ../server/public",
-        "prepublishOnly": "yarn build"
+        "prisma:generate": "prisma generate",
+        "prisma:migrate": "prisma migrate deploy --preview-feature",
+        "prepublishOnly": "yarn build",
+        "postinstall": "npm run prisma:generate"
     },
     "bin": {
         "bundletracker-server": "bin/bundletracker-server"
