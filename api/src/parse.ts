@@ -16,39 +16,14 @@ export function getFilesAndSizes(modules: any[]) {
     return collector
 }
 
-interface SizeTree extends Record<string, SizeTree> {
-    [sizeKey]: number
+export interface TreeNode {
+    name: string
+    value?: number
+    children: TreeNode[]
 }
 
 export function convertToTree(filesAndSizes: Map<string, number>) {
-    const tree: SizeTree = {
-        [sizeKey]: 0,
-    }
-    for (const [file, size] of filesAndSizes) {
-        let pointer = tree
-        pointer[sizeKey] += size
-        for (const filePart of file.split('/')) {
-            let child = pointer[filePart]
-            if (!child) {
-                child = pointer[filePart] = {
-                    [sizeKey]: 0,
-                }
-            }
-            child[sizeKey] += size
-            pointer = child
-        }
-    }
-    return tree
-}
-
-export interface D3Tree {
-    name: string
-    value?: number
-    children: D3Tree[]
-}
-
-export function convertToD3Tree(filesAndSizes: Map<string, number>) {
-    const tree: D3Tree = {
+    const tree: TreeNode = {
         name: '<root>',
         children: [],
     }
