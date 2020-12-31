@@ -12,6 +12,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
         setDials: (dials: Partial<Dials>) => ({ dials }),
         setDialsDebounced: (dials: Partial<Dials>) => ({ dials }),
         setHoverPath: (path: string | null) => ({ path }),
+        setRoot: (root: string) => ({ root }),
     },
     listeners: ({ actions }) => ({
         loadStats: async () => {
@@ -43,7 +44,23 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                 setHoverPath: (_, { path }) => path,
             },
         ],
+        root: [
+            '',
+            {
+                setRoot: (_, { root }) => root,
+            },
+        ],
     },
+    actionToUrl: () => ({
+        setRoot: ({ root }) => ['/', { root }],
+    }),
+    urlToAction: ({ actions, values }) => ({
+        '/': (_, { root }) => {
+            if ((values.root || '') !== (root || '')) {
+                actions.setRoot(root || '')
+            }
+        },
+    }),
     windowValues: {
         windowWidth: (window) => window.innerWidth,
         windowHeight: (window) => window.innerHeight,
@@ -69,6 +86,33 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
             },
         ],
 
+        treeWithFilter: [
+            (s) => [s.treeWithValues, s.root],
+            (tree, root) => {
+                if (root && tree && root !== '<root>') {
+                    const [, ...pathParts] = root.split('/')
+                    for (const path of pathParts) {
+                        tree = tree?.children.find((c) => c.name === path)
+                    }
+                }
+                return tree
+            },
+        ],
+
+        simplifiedTree: [
+            (s) => [s.treeWithFilter],
+            (tree) => {
+                function simplifyTree(tree: TreeNode): TreeNode {
+                    if (tree.children.length === 1 && tree.name !== 'node_modules') {
+                        return { ...tree.children[0], name: `${tree.name}/${tree.children[0].name}` }
+                    } else {
+                        return { ...tree, children: tree.children.map(simplifyTree) }
+                    }
+                }
+                return tree ? simplifyTree(tree) : null
+            },
+        ],
+
         windowCoords: [
             (s) => [s.windowWidth, s.windowHeight],
             (windowWidth, windowHeight) => {
@@ -80,9 +124,9 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
         ],
 
         treeWithCoords: [
-            (s) => [s.treeWithValues, s.windowCoords, s.dials],
-            (treeWithValues, windowCoords, { margin, padding, paddingTop, minWidth, minHeight }) => {
-                if (!treeWithValues || !windowCoords) {
+            (s) => [s.simplifiedTree, s.windowCoords, s.dials],
+            (tree, windowCoords, { margin, padding, paddingTop, minWidth, minHeight }) => {
+                if (!tree || !windowCoords) {
                     return null
                 }
 
@@ -141,7 +185,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                     }
                 }
 
-                return setCoords(treeWithValues, windowCoords, 0, 0)
+                return setCoords(tree, windowCoords, 0, 0)
             },
         ],
     },

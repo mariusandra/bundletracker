@@ -8,8 +8,8 @@ import { useEffect } from 'react'
 const showDials = false
 
 export function TreeScene() {
-    const { hoverPath, treeWithCoords } = useValues(treeLogic)
-    const { setHoverPath } = useActions(treeLogic)
+    const { hoverPath, treeWithCoords, root } = useValues(treeLogic)
+    const { setHoverPath, setRoot } = useActions(treeLogic)
 
     useEffect(() => {
         function getPath(target: HTMLElement) {
@@ -24,7 +24,9 @@ export function TreeScene() {
             setHoverPath(getPath(e.target as HTMLElement))
         }
         function onClick(e: MouseEvent) {
-            console.log(getPath(e.target as HTMLElement))
+            if (e.button === 0) {
+                setRoot(getPath(e.target as HTMLElement))
+            }
         }
         window.addEventListener('mousemove', onMove)
         window.addEventListener('mousedown', onClick)
@@ -34,11 +36,13 @@ export function TreeScene() {
         }
     }, []) // eslint-disable-line
 
+    const rootWithoutLast = root.split('/').slice(0, -1).join('/')
+
     return (
         <div className="tree-scene">
             {treeWithCoords ? (
                 <div style={{ padding: 10, position: 'relative' }}>
-                    <TreeMap node={treeWithCoords} x={0} y={0} hoverPath={hoverPath} />
+                    <TreeMap node={treeWithCoords} x={0} y={0} hoverPath={hoverPath} path={rootWithoutLast} />
                 </div>
             ) : null}
             {showDials && <Dials />}

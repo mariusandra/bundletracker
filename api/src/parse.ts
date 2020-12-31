@@ -70,14 +70,5 @@ export function convertToD3Tree(filesAndSizes: Map<string, number>) {
             pointer = child
         })
     }
-    return simplifyD3Tree(tree)
-}
-
-export function simplifyD3Tree(tree: D3Tree): D3Tree {
-    if (tree.children.length === 1 && tree.name !== 'node_modules') {
-        tree.children[0].name = `${tree.name}/${tree.children[0].name}`
-        return tree.children[0]
-    } else {
-        return { ...tree, children: tree.children.map(simplifyD3Tree) }
-    }
+    return tree
 }
