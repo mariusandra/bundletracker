@@ -45,21 +45,30 @@ $ yarn webpack:build
 📦 Bundle Tracked: http://localhost:4001/b/ckjd1itea0022jsv0fftmls7l
 ```
 
-# Installing the server (not yet)
+# Installing the server
 
-This does not *yet* work.
+Install the package:
 
 ```sh
 npm install -g @bundletracker/server
+```
 
+Configure your environment:
+
+```sh
 export SITE_URL=http://localhost:4001
 export PORT=4001
 export DATABASE_URL=postgres://localhost/bundletracker
-
-bundletracker-server
 ```
 
-You can pass config either via env (`DATABASE_URL`) or cli arguments (`--database-url`).
+Run the server
+
+```sh
+$ bundletracker-server
+
+🟢 6 bundles in the database!
+🟢 BundleTracker Server listening at http://localhost:4001
+```
 
 # Future plans
 
