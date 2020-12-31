@@ -16,8 +16,13 @@ Add it to your CI pipeline and have an instant x-ray into your deployed code.
 
 Use the communal app.bundletracker.io server, where links expire in 7 days, or self-host your own.
 
+# Current status
 
-# Installing the plugin
+- Add webpack stats to `assets/stats.json` and run `yarn start` to see a treemap.
+- That's it. What follows is how it should work.
+
+
+# Installing the plugin (not yet though)
 
 ```sh
 yarn add @bundletracker/plugin
@@ -32,13 +37,14 @@ module.exports = {
     ...,
     plugins: [
         new BundleTrackerPlugin({
-            // host: 'https://app.bundletracker.io'
-        })
-    ]
+            // host: 'https://app.bundletracker.io',
+            // sendStats: process.env.NODE_ENV == 'production',
+        }),
+    ],
 }
 ```
 
-# Installing the server
+# Installing the server (also not yet)
 
 ```sh
 npm install -g @bundletracker/server
@@ -46,7 +52,8 @@ npm install -g @bundletracker/server
 export SITE_URL=http://localhost:3000
 export PORT=3000
 export DATABASE_URL=postgres://localhost/bundletracker
+
 bundletracker-server
 ```
 
-Pass the database either via the `DATABASE_URL` env or the `--database-url` flag.
+You can pass config either via env (`DATABASE_URL`) or cli arguments (`--database-url`).
