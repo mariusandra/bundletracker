@@ -37,8 +37,8 @@ module.exports = {
     ...,
     plugins: [
         new BundleTrackerPlugin({
+            // uploadStats: process.env.NODE_ENV == 'production',
             // host: 'https://app.bundletracker.io',
-            // sendStats: process.env.NODE_ENV == 'production',
         }),
     ],
 }

@@ -6,13 +6,15 @@ import { getFilesAndSizes, convertToTree } from '../../api/src/parse'
 
 interface Options {
     host: string
+    uploadStats: boolean
 }
 
 /**
  * Bundle Tracker Plugin
  *
- * @param {Object}            opts           options
- * @param {String}            opts.host      host to emit to (Default: `"https://app.bundletracker.io"`)
+ * @param {Object}     opts                options
+ * @param {Boolean}    opts.uploadStats    whether to upload the bundle (default true if NODE_ENV === "production")
+ * @param {String}     opts.host           host to upload to (default: `"https://app.bundletracker.io"`)
  *
  * @api public
  */
@@ -21,6 +23,8 @@ export class BundleTrackerPlugin {
 
     constructor(opts: Partial<Options> = {}) {
         this.opts = {
+            uploadStats:
+                typeof opts.uploadStats === 'undefined' ? process.env.NODE_ENV === 'production' : opts.uploadStats,
             host: opts.host || 'https://app.bundletracker.io',
         }
     }
@@ -64,6 +68,9 @@ export class BundleTrackerPlugin {
     }
 
     emitStats(curCompiler: any, callback?: any) {
+        if (!this.opts.uploadStats) {
+            return
+        }
         let stats = curCompiler.getStats().toJson()
 
         // Transform to string.
