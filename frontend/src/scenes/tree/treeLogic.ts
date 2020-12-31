@@ -14,18 +14,29 @@ const defaultDials: Dials = {
 
 export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Dials>>({
     actions: {
-        loadStats: true,
-        setStatsResponse: (statsResponse: APITreeNode) => ({ statsResponse }),
+        setError: (error: string) => ({ error }),
+        setBundle: (bundle: string) => ({ bundle }),
+        setBundleResponse: (statsResponse: APITreeNode) => ({ statsResponse }),
         setDials: (dials: Partial<Dials>) => ({ dials }),
         setDialsDebounced: (dials: Partial<Dials>) => ({ dials }),
         setHoverPath: (path: string | null) => ({ path }),
         setRootHue: (root: string, hue: number) => ({ root, hue }),
     },
     listeners: ({ actions }) => ({
-        loadStats: async () => {
-            const response = await fetch('/bundle.json')
-            const stats = await response.json()
-            actions.setStatsResponse(stats)
+        setBundle: async ({ bundle }) => {
+            try {
+                const response = await fetch(`/bundle/${bundle}.json`)
+                if (response.status === 200) {
+                    const stats = await response.json()
+                    actions.setBundleResponse(stats)
+                } else {
+                    const stats = await response.json()
+                    throw new Error(stats.error)
+                }
+            } catch (error) {
+                actions.setError(error.message)
+                console.error(error)
+            }
         },
         setDials: async ({ dials }, breakpoint) => {
             await breakpoint(10)
@@ -36,7 +47,7 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
         statsResponse: [
             null as APITreeNode | null,
             {
-                setStatsResponse: (_, { statsResponse }) => statsResponse,
+                setBundleResponse: (_, { statsResponse }) => statsResponse,
             },
         ],
         dials: [
@@ -58,6 +69,19 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                 setRootHue: (_, { root }) => root,
             },
         ],
+        bundle: [
+            '',
+            {
+                setBundle: (_, { bundle }) => bundle,
+            },
+        ],
+        error: [
+            null as null | string,
+            {
+                setError: (_, { error }) => error,
+                setBundle: () => null,
+            },
+        ],
         hue: [
             0,
             {
@@ -65,11 +89,14 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
             },
         ],
     },
-    actionToUrl: () => ({
-        setRootHue: ({ root, hue }) => ['/', root || hue ? { root, hue } : {}],
+    actionToUrl: ({ values }) => ({
+        setRootHue: ({ root, hue }) => [`/b/${values.bundle}`, root || hue ? { root, hue } : {}],
     }),
     urlToAction: ({ actions, values }) => ({
-        '/': (_, { root = '', hue = '0' }) => {
+        '/b/:bundle': ({ bundle }, { root = '', hue = '0' }) => {
+            if (values.bundle !== bundle) {
+                actions.setBundle(bundle)
+            }
             if (values.root !== root || values.hue !== parseInt(hue)) {
                 actions.setRootHue(root, parseInt(hue))
             }
@@ -213,9 +240,4 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
             },
         ],
     },
-    events: ({ actions }) => ({
-        afterMount() {
-            actions.loadStats()
-        },
-    }),
 })

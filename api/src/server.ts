@@ -21,6 +21,21 @@ async function main() {
         res.json(tree)
     })
 
+    app.get('/bundle/:bundle.json', async (req, res) => {
+        const { bundle } = req.params
+        const bundleModel = await prisma.bundle.findFirst({
+            where: {
+                id: bundle,
+            },
+        })
+
+        if (bundleModel) {
+            res.json(bundleModel.tree)
+        } else {
+            res.status(404).json({ error: '404 not found' })
+        }
+    })
+
     app.post('/upload', async (req, res) => {
         try {
             const { tree, meta } = req.body
