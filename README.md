@@ -10,7 +10,7 @@ https://app.bundletracker.io/4053a737-552a-415c-8b70-a70a208ddc90
 
 which opens to this:
 
-![BundleTracker Demo](https://bundletracker.io/files/demo.gif)
+![BundleTracker Demo](https://user-images.githubusercontent.com/53387/103389630-4985d680-4b10-11eb-8c5d-4afc56e554be.gif)
 
 Add it to your CI pipeline and have an instant x-ray into your deployed code.
 
