@@ -4,7 +4,8 @@
     "private": true,
     "workspaces": [
         "api",
-        "frontend"
+        "frontend",
+        "plugin"
     ],
     "scripts": {
         "start": "yarn start:dev",
