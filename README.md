@@ -52,8 +52,8 @@ This does not *yet* work.
 ```sh
 npm install -g @bundletracker/server
 
-export SITE_URL=http://localhost:3000
-export PORT=3000
+export SITE_URL=http://localhost:4001
+export PORT=4001
 export DATABASE_URL=postgres://localhost/bundletracker
 
 bundletracker-server
