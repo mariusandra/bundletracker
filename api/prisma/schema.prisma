@@ -13,4 +13,5 @@ generator client {
 model Bundle {
   id    String  @id @default(cuid())
   json    Json  @default("{}")
+  meta    Json  @default("{}")
 }
