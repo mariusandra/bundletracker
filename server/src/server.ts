@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import express from 'express'
 import { convertToTree, getFilesAndSizes } from './parse'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../prisma/client'
 
 const prisma = new PrismaClient()
 const app = express()
