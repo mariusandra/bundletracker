@@ -1,3 +1,26 @@
 #!/usr/bin/env node
+const { exec } = require('child_process')
+const path = require('path')
+async function main() {
+    const prismaPath = path.resolve(__dirname, '../node_modules/.bin/prisma')
+    const runCommand = (command) =>
+        new Promise((resolve, reject) => {
+            exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(stderr)
+                    reject(stderr)
+                    process.exit(1)
+                } else {
+                    console.log(stdout)
+                    resolve(stdout)
+                }
+            })
+        })
 
-require(__dirname + '/../dist/server.js')
+    console.log('📙 Running Prisma Migrations')
+    await runCommand(`${prismaPath} migrate deploy --preview-feature`)
+
+    require(__dirname + '/../dist/server.js')
+}
+
+main()
