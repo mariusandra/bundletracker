@@ -3,7 +3,14 @@ import { treeLogicType } from './treeLogicType'
 import { APITreeNode, TreeCoords, TreeNode, Dials } from './types'
 import squarify from 'squarify'
 
-const defaultDials: Dials = { padding: 0, paddingTop: 14, margin: 4, minWidth: 20, minHeight: 32 }
+const defaultDials: Dials = {
+    padding: 0,
+    paddingTop: 14,
+    margin: 4,
+    minWidth: 24,
+    minHeight: 24,
+    minHeightToHaveChildren: 32,
+}
 
 export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Dials>>({
     actions: {
@@ -132,7 +139,12 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
 
         treeWithCoords: [
             (s) => [s.simplifiedTree, s.windowCoords, s.dials, s.hue],
-            (tree, windowCoords, { margin, padding, paddingTop, minWidth, minHeight }, hue) => {
+            (
+                tree,
+                windowCoords,
+                { margin, padding, paddingTop, minWidth, minHeight, minHeightToHaveChildren },
+                hue
+            ) => {
                 if (!tree || !windowCoords) {
                     return null
                 }
@@ -144,7 +156,12 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
                     const y1 = coords.y1 - (level === 0 ? 0 : margin)
 
                     let combinedChildren: TreeNode[] = []
-                    if (x1 > x0 && y1 > y0 && coords.x1 - coords.x0 >= minWidth && coords.y1 - coords.y0 >= minHeight) {
+                    if (
+                        x1 > x0 &&
+                        y1 > y0 &&
+                        coords.x1 - coords.x0 >= minWidth &&
+                        coords.y1 - coords.y0 >= minHeightToHaveChildren
+                    ) {
                         const area = (x1 - x0) * (y1 - y0)
 
                         const minimalAreaforChild =

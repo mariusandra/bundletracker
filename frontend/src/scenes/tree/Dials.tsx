@@ -47,6 +47,14 @@ export function Dials() {
                     onChange={(e) => setDials({ minHeight: parseInt(e.target.value) })}
                 />
             </div>
+            <div>
+                <label>Min height to have children: {dials.minHeightToHaveChildren}</label>
+                <input
+                    type="range"
+                    value={dials.minHeightToHaveChildren}
+                    onChange={(e) => setDials({ minHeightToHaveChildren: parseInt(e.target.value) })}
+                />
+            </div>
         </div>
     )
 }

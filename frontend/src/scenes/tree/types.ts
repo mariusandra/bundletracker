@@ -25,4 +25,5 @@ export interface Dials {
     margin: number
     minWidth: number
     minHeight: number
+    minHeightToHaveChildren: number
 }
