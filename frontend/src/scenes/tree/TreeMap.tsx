@@ -9,14 +9,14 @@ interface TreeMapProps {
     hoverPath: string
 }
 
-function getColor(level: number, path: string, hueIndex: number, hover: boolean) {
+function getColor(level: number, node: TreeNode, path: string, hueIndex: number, hover: boolean) {
     const nodeModulesLevel = path.split('/').filter((p) => p === 'node_modules').length
-    const hsl = [
-        hueIndex * 3 + nodeModulesLevel * 100,
-        path === '<root>' || path === '<root>/.' || path.endsWith('/node_modules') ? 0 : 40 + (hover ? 30 : 0),
-        88 - level * 5 + (hover ? 12 : 0),
-    ]
-    return `hsl(${hsl[0]}deg ${hsl[1]}% ${hsl[2]}%)`
+
+    const h = hueIndex * 3 + nodeModulesLevel * 100
+    const s = node.meta?.root || node.meta?.node_modules || path === '<root>/.' ? 0 : 40 + (hover ? 30 : 25) - level * 2
+    const l = 84 - level * 4 + (hover ? 10 : 5)
+
+    return `hsl(${h}deg ${s}% ${l}%)`
 }
 
 export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hoverPath }: TreeMapProps) {
@@ -25,7 +25,10 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hoverPath }:
 
     const classes = [
         'tree-node',
-        path.endsWith('/node_modules') ? 'is-node-modules' : '',
+        node.meta?.node_modules ? 'is-node-modules' : '',
+        node.meta?.module ? 'is-module' : '',
+        node.meta?.chunk ? 'is-chunk' : '',
+        node.meta?.root ? 'is-root' : '',
         hoverPath === rootPath ? 'hover' : '',
         node.children.length === 0 ? 'is-leaf' : '',
     ]
@@ -39,13 +42,13 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hoverPath }:
                 height: y1 - y0,
                 left: x0 - x,
                 top: y0 - y,
-                background: getColor(level, rootPath, node.hueIndex, pathHover),
+                background: getColor(level, node, rootPath, node.hueIndex, pathHover),
             }}
             data-path={rootPath}
             data-hue={node.hueIndex}
         >
             <div className="tree-heading">
-                {node.name} {humanFileSize(node.value)}
+                {node.name.startsWith('./') ? node.name.substring(2) : node.name} {humanFileSize(node.value)}
             </div>
             {node.children.map((child, i) => (
                 <TreeMap

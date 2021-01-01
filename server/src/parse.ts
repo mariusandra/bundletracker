@@ -2,6 +2,12 @@ export interface TreeNode {
     name: string
     value?: number
     children: TreeNode[]
+    meta?: {
+        root?: boolean
+        module?: boolean
+        chunk?: boolean
+        node_modules?: boolean
+    }
 }
 
 export function getFilesAndSizes(modules: any[]) {
@@ -24,6 +30,7 @@ export function convertToTree(filesAndSizes: Map<string, number>): TreeNode {
     const tree: TreeNode = {
         name: '<root>',
         children: [],
+        meta: { root: true },
     }
     for (const [file, size] of filesAndSizes) {
         let pointer = tree
@@ -34,6 +41,11 @@ export function convertToTree(filesAndSizes: Map<string, number>): TreeNode {
                 child = {
                     name: filePart,
                     children: [],
+                }
+                if (filePart === 'node_modules') {
+                    child.meta = { node_modules: true }
+                } else if (pointer.name === 'node_modules') {
+                    child.meta = { module: true }
                 }
                 pointer.children.push(child)
             }
@@ -47,7 +59,19 @@ export function convertToTree(filesAndSizes: Map<string, number>): TreeNode {
 }
 
 export function parseStats(stats: any): TreeNode {
-    const filesAndSizes = getFilesAndSizes(stats.modules)
-    const tree = convertToTree(filesAndSizes)
-    return tree
+    const root: TreeNode = {
+        name: '<root>',
+        children: [],
+        meta: { root: true },
+    }
+
+    for (const chunk of stats.chunks) {
+        const filesAndSizes = getFilesAndSizes(chunk.modules)
+        const tree = convertToTree(filesAndSizes)
+        tree.name = chunk.names[0] || `chunk-${chunk.id}`
+        tree.meta = { chunk: true }
+        root.children.push(tree)
+    }
+
+    return root
 }

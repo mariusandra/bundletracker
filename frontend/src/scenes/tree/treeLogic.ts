@@ -144,7 +144,12 @@ export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Di
             (s) => [s.treeWithFilter],
             (tree) => {
                 function simplifyTree(tree: TreeNode): TreeNode {
-                    if (tree.children.length === 1 && tree.name !== 'node_modules') {
+                    if (
+                        tree.children.length === 1 &&
+                        !tree.meta?.node_modules &&
+                        !tree.meta?.module &&
+                        !tree.meta?.chunk
+                    ) {
                         return { ...tree.children[0], name: `${tree.name}/${tree.children[0].name}` }
                     } else {
                         return { ...tree, children: tree.children.map(simplifyTree) }

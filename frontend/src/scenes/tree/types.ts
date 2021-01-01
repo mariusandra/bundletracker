@@ -1,7 +1,15 @@
+export interface TreeMeta {
+    root?: boolean
+    module?: boolean
+    chunk?: boolean
+    node_modules?: boolean
+}
+
 export interface APITreeNode {
     name: string
     value?: number
     children: APITreeNode[]
+    meta?: TreeMeta
 }
 
 export interface TreeNode {
@@ -10,6 +18,7 @@ export interface TreeNode {
     children: TreeNode[]
     coords?: TreeCoords
     hueIndex: number
+    meta?: TreeMeta
 }
 
 export interface TreeCoords {
