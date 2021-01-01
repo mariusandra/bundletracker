@@ -40,6 +40,7 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hoverPath }:
         node.children.length === 0 ? 'is-leaf' : '',
     ]
     const pathHover = `${rootPath}/`.startsWith(`${hoverPath}/`) // avoids /bla-1 matching /bla-10
+    const title = `${node.name.startsWith('./') ? node.name.substring(2) : node.name} ${humanFileSize(node.value)}`
 
     return (
         <div
@@ -54,8 +55,8 @@ export function TreeMap({ node, level = 0, path = '', x = 0, y = 0, hoverPath }:
             data-path={rootPath}
             data-hue={node.hueIndex}
         >
-            <div className="tree-heading">
-                {node.name.startsWith('./') ? node.name.substring(2) : node.name} {humanFileSize(node.value)}
+            <div className="tree-heading" title={title}>
+                {title}
             </div>
             {node.children.map((child, i) => (
                 <TreeMap

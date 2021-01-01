@@ -72,9 +72,7 @@ $ bundletracker-server
 
 This project is in a really early beta. Some of the next planned things include
 
-- Split by modules
 - Group bundles into projects
 - Track changes in your bundles over time
 - Make the \*OTHER\* box clickable
 - Show minified/gzipped sizes
-- Tooltips
