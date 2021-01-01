@@ -33,7 +33,11 @@ export function TreeScene() {
         }
         function onClick(e: MouseEvent) {
             if (e.button === 0) {
-                setRootHue(getPath(e.target as HTMLElement), getHue(e.target as HTMLElement))
+                const path = getPath(e.target as HTMLElement)
+                const hue = getHue(e.target as HTMLElement)
+                if (!path.endsWith('*OTHER*')) {
+                    setRootHue(path, hue)
+                }
             }
         }
         window.addEventListener('mousemove', onMove)
