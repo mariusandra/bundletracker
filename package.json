@@ -9,9 +9,9 @@
     ],
     "scripts": {
         "start": "yarn start:dev",
-        "start:dev": "concurrently -n API,FRONTEND,TYPEGEN -c blue,green,yellow \"yarn start:api:dev\" \"yarn start:frontend\" \"yarn start:typegen\"",
-        "start:api:dev": "cd api && yarn start:dev",
-        "start:api:dist": "cd api && yarn start:dist",
+        "start:dev": "concurrently -n SERVER,FRONTEND,TYPEGEN -c blue,green,yellow \"yarn start:server:dev\" \"yarn start:frontend\" \"yarn start:typegen\"",
+        "start:server:dev": "cd server && yarn start:dev",
+        "start:server:dist": "cd server && yarn start:dist",
         "start:frontend": "cd frontend && yarn start",
         "start:typegen": "cd frontend && yarn typegen"
     },

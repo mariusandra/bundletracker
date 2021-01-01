@@ -18,7 +18,7 @@ async function main() {
     app.use(express.json({ limit: '20mb' }))
     app.use(express.static(staticPath))
 
-    app.get('/bundle.json', (req, res) => {
+    app.get('/bundle/dev.json', (req, res) => {
         const json = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../assets/stats.json')).toString())
         const filesAndSizes = getFilesAndSizes(json.modules)
         const tree = convertToTree(filesAndSizes)
