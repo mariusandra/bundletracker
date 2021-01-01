@@ -13,8 +13,10 @@ async function main() {
     const bundleCount = await prisma.bundle.count()
     console.log(`🟢 ${bundleCount} bundles in the database!`)
 
+    const staticPath = path.resolve(__dirname, '../public')
+
     app.use(express.json({ limit: '20mb' }))
-    app.use(express.static(path.resolve(__dirname, '../public')))
+    app.use(express.static(staticPath))
 
     app.get('/bundle.json', (req, res) => {
         const json = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../assets/stats.json')).toString())
@@ -51,6 +53,10 @@ async function main() {
         } catch (error) {
             res.json({ success: false, message: '🔴 Could not store bundle!' })
         }
+    })
+
+    app.get('/b/*', (req, res) => {
+        res.sendFile(path.resolve(staticPath, 'index.html'))
     })
 
     app.listen(port, () => {
