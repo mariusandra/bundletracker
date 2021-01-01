@@ -14,13 +14,10 @@ async function main() {
     console.log(`🟢 ${bundleCount} bundles in the database!`)
 
     app.use(express.json({ limit: '20mb' }))
-
-    // if (fs.existsSync(path.join(__dirname, '../public'))) {
-    app.use(express.static('public'))
-    // }
+    app.use(express.static(path.resolve(__dirname, '../public')))
 
     app.get('/bundle.json', (req, res) => {
-        const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../../assets/stats.json')).toString())
+        const json = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../assets/stats.json')).toString())
         const filesAndSizes = getFilesAndSizes(json.modules)
         const tree = convertToTree(filesAndSizes)
 
