@@ -4,9 +4,7 @@ BundleTracker is a webpack plugin that uploads stats about your bundles to a bac
 
 This service returns an URL, such as:
 
-```
-https://app.bundletracker.io/4053a737-552a-415c-8b70-a70a208ddc90
-```
+[`https://app.bundletracker.io/b/ckjdjmukg00089odyjlhmf9su`](https://app.bundletracker.io/b/ckjdjmukg00089odyjlhmf9su)
 
 which opens to this:
 
@@ -14,7 +12,7 @@ which opens to this:
 
 Add it to your CI pipeline and have an instant x-ray into your deployed code.
 
-Use the communal app.bundletracker.io server, where links expire in 7 days, or self-host your own.
+Use the communal app.bundletracker.io server, where links expire in 14 days, or self-host your own.
 
 # Installing the plugin
 
@@ -72,4 +70,10 @@ $ bundletracker-server
 
 # Future plans
 
+This project is in a really early beta. Some of the next planned things include
+
+- Split by modules
+- Group bundles into projects
 - Track changes in your bundles over time
+- Make the \*OTHER\* box clickable
+- Show minified/gzipped sizes
