@@ -4,7 +4,7 @@ BundleTracker is a webpack plugin that uploads stats about your bundles to a bac
 
 This service returns an URL, such as:
 
-[`https://app.bundletracker.io/b/ckjdjmukg00089odyjlhmf9su`](https://app.bundletracker.io/b/ckjdjmukg00089odyjlhmf9su)
+[`https://app.bundletracker.io/b/ckjei3cuk0026rgdysj02p2q6`](https://app.bundletracker.io/b/ckjei3cuk0026rgdysj02p2q6)
 
 which opens to this:
 
