@@ -1,6 +1,6 @@
 {
     "name": "@bundletracker/server",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "scripts": {
         "start": "yarn start:dev",
         "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
