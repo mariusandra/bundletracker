@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import express from 'express'
-import { convertToTree, getFilesAndSizes } from './parse'
+import { parseStats } from './parse'
 import { PrismaClient } from '../prisma/client'
 
 const prisma = new PrismaClient()
@@ -19,11 +19,8 @@ async function main() {
     app.use(express.static(staticPath))
 
     app.get('/bundle/dev.json', (req, res) => {
-        const json = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../assets/stats.json')).toString())
-        const filesAndSizes = getFilesAndSizes(json.modules)
-        const tree = convertToTree(filesAndSizes)
-
-        res.json(tree)
+        const stats = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../assets/stats.json')).toString())
+        res.json(parseStats(stats))
     })
 
     app.get('/bundle/:bundle.json', async (req, res) => {

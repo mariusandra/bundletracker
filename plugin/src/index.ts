@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { getFilesAndSizes, convertToTree } from '../../api/src/parse'
+import { parseStats } from '../../server/src/parse'
 import { version } from '../package.json'
 
 // Adapted from:
@@ -78,8 +78,7 @@ export class BundleTrackerPlugin {
         let err
         return Promise.resolve()
             .then(() => {
-                const filesAndSizes = getFilesAndSizes(stats.modules)
-                const tree = convertToTree(filesAndSizes)
+                const tree = parseStats(stats)
                 const meta = {
                     pluginVersion: version,
                     webpackVersion: stats.version,

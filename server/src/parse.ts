@@ -1,4 +1,8 @@
-export const sizeKey = Symbol('size')
+export interface TreeNode {
+    name: string
+    value?: number
+    children: TreeNode[]
+}
 
 export function getFilesAndSizes(modules: any[]) {
     const collector = new Map<string, number>()
@@ -16,13 +20,7 @@ export function getFilesAndSizes(modules: any[]) {
     return collector
 }
 
-export interface TreeNode {
-    name: string
-    value?: number
-    children: TreeNode[]
-}
-
-export function convertToTree(filesAndSizes: Map<string, number>) {
+export function convertToTree(filesAndSizes: Map<string, number>): TreeNode {
     const tree: TreeNode = {
         name: '<root>',
         children: [],
@@ -45,5 +43,11 @@ export function convertToTree(filesAndSizes: Map<string, number>) {
             pointer = child
         })
     }
+    return tree
+}
+
+export function parseStats(stats: any): TreeNode {
+    const filesAndSizes = getFilesAndSizes(stats.modules)
+    const tree = convertToTree(filesAndSizes)
     return tree
 }
