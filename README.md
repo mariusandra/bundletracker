@@ -12,7 +12,7 @@ which opens to this:
 
 Add it to your CI pipeline and have an instant x-ray into your deployed code.
 
-Use the communal app.bundletracker.io server, where links expire in 14 days, or self-host your own.
+Use the communal `app.bundletracker.io` server, where links expire in 14 days, or self-host your own.
 
 # Installing the plugin
 
@@ -40,7 +40,7 @@ Build your bundle as you normally would and visit the emitted URL to see inside:
 
 ```sh
 $ yarn webpack:build
-📦 Bundle Tracked: http://localhost:4001/b/ckjd1itea0022jsv0fftmls7l
+📦 Bundle Tracked: https://app.bundletracker.io/b/ckjdjmukg00089odyjlhmf9su
 ```
 
 # Installing the server
@@ -77,3 +77,4 @@ This project is in a really early beta. Some of the next planned things include
 - Track changes in your bundles over time
 - Make the \*OTHER\* box clickable
 - Show minified/gzipped sizes
+- Tooltips

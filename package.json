@@ -1,5 +1,5 @@
 {
-    "name": "@bundletracker/server",
+    "name": "@bundletracker/workspace",
     "version": "0.1.0",
     "private": true,
     "workspaces": [
