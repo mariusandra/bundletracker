@@ -10,7 +10,14 @@ interface TreeMapProps {
 }
 
 function getColor(level: number, node: TreeNode, path: string, hueIndex: number, hover: boolean) {
-    const nodeModulesLevel = path.split('/').filter((p) => p === 'node_modules').length
+    const pathParts = path.split('/')
+    const nodeModulesDepth = pathParts.lastIndexOf('node_modules')
+    const nodeModulesLevel = pathParts.filter((p) => p === 'node_modules').length
+
+    if (nodeModulesDepth > 0) {
+        level -= nodeModulesDepth - 1
+        level += nodeModulesLevel
+    }
 
     const h = hueIndex * 3 + nodeModulesLevel * 100
     const s = node.meta?.root || node.meta?.node_modules || path === '<root>/.' ? 0 : 40 + (hover ? 30 : 25) - level * 2

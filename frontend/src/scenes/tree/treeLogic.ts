@@ -1,6 +1,6 @@
 import { kea } from 'kea'
 import { treeLogicType } from './treeLogicType'
-import { APITreeNode, TreeCoords, TreeNode, Dials } from './types'
+import { APITreeNode, TreeCoords, TreeNode, TreeMeta, Dials } from './types'
 import squarify from 'squarify'
 
 const defaultDials: Dials = {
@@ -12,7 +12,7 @@ const defaultDials: Dials = {
     minHeightToHaveChildren: 32,
 }
 
-export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, Dials>>({
+export const treeLogic = kea<treeLogicType<APITreeNode, TreeNode, TreeCoords, TreeMeta, Dials>>({
     actions: {
         setError: (error: string) => ({ error }),
         setBundle: (bundle: string) => ({ bundle }),
