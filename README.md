@@ -8,7 +8,7 @@ This service returns an URL, such as:
 
 which opens to this:
 
-![BundleTracker Demo](https://bundletracker.io/files/demo.gif)
+![BundleTracker Demo](https://user-images.githubusercontent.com/53387/103489877-01202e80-4e18-11eb-8c6a-508e23934eba.gif)
 
 Add it to your CI pipeline and have an instant x-ray into your deployed code.
 
