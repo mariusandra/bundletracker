@@ -12,7 +12,20 @@ generator client {
 }
 
 model Bundle {
-  id    String  @id @default(cuid())
-  tree    Json  @default("{}")
-  meta    Json  @default("{}")
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  tree       Json      @default("{}")
+  meta       Json      @default("{}")
+  token      String    @unique
+  project    Project?  @relation(fields: [projectId], references: [id])
+  projectId  String?
+  commit     String?
+  branch     String?
+}
+
+model Project {
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  name       String
+  token      String    @unique
 }

@@ -6,16 +6,22 @@ import { version } from '../package.json'
 // https://raw.githubusercontent.com/FormidableLabs/webpack-stats-plugin/main/lib/stats-writer-plugin.js
 
 interface Options {
+    upload: boolean
     host: string
-    uploadStats: boolean
+    token?: string
+    commit?: string
+    branch?: string
 }
 
 /**
  * Bundle Tracker Plugin
  *
  * @param {Object}     opts                options
- * @param {Boolean}    opts.uploadStats    whether to upload the bundle (default true if NODE_ENV === "production")
+ * @param {Boolean}    opts.upload         whether to upload the bundle (default true if NODE_ENV === "production")
  * @param {String}     opts.host           host to upload to (default: `"https://app.bundletracker.io"`)
+ * @param {String}     opts.token          optional project token
+ * @param {String}     opts.commit         optional git commit hash
+ * @param {String}     opts.branch         optional git branch name
  *
  * @api public
  */
@@ -24,9 +30,11 @@ export class BundleTrackerPlugin {
 
     constructor(opts: Partial<Options> = {}) {
         this.opts = {
-            uploadStats:
-                typeof opts.uploadStats === 'undefined' ? process.env.NODE_ENV === 'production' : opts.uploadStats,
+            upload: typeof opts.upload === 'undefined' ? process.env.NODE_ENV === 'production' : opts.upload,
             host: opts.host || 'https://app.bundletracker.io',
+            token: opts.token,
+            commit: opts.commit,
+            branch: opts.branch,
         }
     }
 
@@ -69,7 +77,9 @@ export class BundleTrackerPlugin {
     }
 
     emitStats(curCompiler: any, callback?: any) {
-        if (!this.opts.uploadStats) {
+        const { upload, host, token, commit, branch } = this.opts
+        if (!upload) {
+            console.error('ℹ️ BundleTracker: Skipping upload due to { upload: false } option')
             return
         }
         let stats = curCompiler.getStats().toJson()
@@ -85,12 +95,12 @@ export class BundleTrackerPlugin {
                     hash: stats.hash,
                 }
 
-                const url = `${this.opts.host}/upload`
+                const url = `${host}/upload`
 
                 try {
                     fetch(url, {
                         method: 'POST',
-                        body: JSON.stringify({ tree, meta }),
+                        body: JSON.stringify({ tree, meta, token, commit, branch }),
                         headers: { 'Content-Type': 'application/json' },
                     })
                         .then((res) => res.json())
@@ -100,6 +110,10 @@ export class BundleTrackerPlugin {
                             } else {
                                 console.log(res)
                             }
+                        })
+                        .catch((error) => {
+                            console.error('🔴 Error uploading stats to BundleTracker')
+                            console.error(error)
                         })
                 } catch (error) {
                     console.error('🔴 Error uploading stats to BundleTracker')

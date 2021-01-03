@@ -1,7 +1,30 @@
 #!/usr/bin/env node
 const { exec } = require('child_process')
 const path = require('path')
-async function main() {
+
+require('yargs')
+    .scriptName('bundletracker-server')
+    .usage('$0 <cmd> [args]')
+    .command(['start', '$0'], 'run "migrate" and "server"', async () => {
+        await migrate()
+        await server()
+    })
+    .command('migrate', 'run pending database migrations', migrate)
+    .command('server', 'start the server', server)
+    .command(
+        'new project [name]',
+        'create a new project and get its token',
+        (yargs) => {
+            yargs.positional('name', {
+                type: 'string',
+                describe: 'name of the project',
+            })
+        },
+        newProject
+    )
+    .help().argv
+
+async function migrate() {
     const prismaPath = path.resolve(__dirname, '../node_modules/.bin/prisma')
     const schemaPath = path.resolve(__dirname, '../prisma/schema.prisma')
     const runCommand = (command) =>
@@ -18,10 +41,46 @@ async function main() {
             })
         })
 
-    console.log('📙 Running Prisma Migrations')
+    console.log('📙 Running Migrations')
     await runCommand(`${prismaPath} migrate deploy --schema ${schemaPath} --preview-feature`)
+}
 
+async function server() {
     require(__dirname + '/../dist/server.js')
 }
 
-main()
+async function newProject({ name }) {
+    if (!name) {
+        console.error('Please enter a name for the new project!')
+        process.exit(1)
+    }
+
+    const { PrismaClient } = require('../prisma/client')
+    const prisma = new PrismaClient()
+
+    const { randomString } = require('../dist/utils')
+    const token = randomString(40)
+    await prisma.project.create({ data: { name, token } })
+
+    console.log(`🏁 Project "${name}" created!`)
+    console.log(`🔑 Use this token to upload bundles: ${token}`)
+    process.exit(1)
+}
+
+async function start() {
+    await migrate()
+    await server()
+}
+
+async function cli() {
+    console.log('CLI!', process.argv)
+    const command = process.argv[1] || 'start'
+    const commands = {
+        start,
+        migrate,
+        server,
+    }
+    if (commands[command]) {
+        return await commands[command]()
+    }
+}

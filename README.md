@@ -29,8 +29,11 @@ module.exports = {
     ...,
     plugins: [
         new BundleTrackerPlugin({
-            // uploadStats: process.env.NODE_ENV === 'production',
-            // host: 'https://app.bundletracker.io',
+            upload: process.env.NODE_ENV === 'production',
+            host: 'https://app.bundletracker.io',
+            // token: 'optional project token', 
+            // commit: process.env.GITHUB_SHA,
+            // branch: process.env.GITHUB_REF?.split('/').splice(2).join('/')
         }),
     ],
 }
