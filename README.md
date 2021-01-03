@@ -4,7 +4,7 @@ BundleTracker is a webpack plugin that uploads stats about your bundles to a bac
 
 This service returns an URL, such as:
 
-[`https://app.bundletracker.io/b/ckjei3cuk0026rgdysj02p2q6`](https://app.bundletracker.io/b/ckjei3cuk0026rgdysj02p2q6)
+[`https://app.bundletracker.io/b/nNvYVNSdvztajddgGhaadomuB7okP2gL7OrdIydZ`](https://app.bundletracker.io/b/nNvYVNSdvztajddgGhaadomuB7okP2gL7OrdIydZ)
 
 which opens to this:
 
@@ -43,7 +43,7 @@ Build your bundle as you normally would and visit the emitted URL to see inside:
 
 ```sh
 $ yarn webpack:build
-📦 Bundle Tracked: https://app.bundletracker.io/b/ckjdjmukg00089odyjlhmf9su
+📦 Bundle Tracked: https://app.bundletracker.io/b/nNvYVNSdvztajddgGhaadomuB7okP2gL7OrdIydZ
 ```
 
 # Installing the server
@@ -71,11 +71,23 @@ $ bundletracker-server
 🟢 BundleTracker Server listening at http://localhost:4001
 ```
 
+## Project Tokens
+
+You can group uploaded bundles into projects. To generate a new project and get a token, run the following:
+
+```sh
+$ bundletracker-server new project "Project Name"
+🏁 Project "Project Name" created!
+🔑 Use this token to upload bundles: FruKK2wTL8ybGCSl452ZzqhXjVNm4B1Q3WTQlrPG
+```
+
+Project support is still raw. You can link bundles to a project, but you can't see a combined list of bundles in a project.
+
 # Future plans
 
-This project is in a really early beta. Some of the next planned things include
+BundleTracker is in a really early state. Some of the next planned things include:
 
-- Group bundles into projects
-- Track changes in your bundles over time
+- List all bundles in a project
+- Track changes in your bundles in a project over time
 - Make the \*OTHER\* box clickable
 - Show minified/gzipped sizes
