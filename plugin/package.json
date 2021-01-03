@@ -1,7 +1,7 @@
 {
     "name": "@bundletracker/plugin",
     "main": "dist/plugin/src/index.js",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "scripts": {
         "build": "tsc -p .",
         "prepublishOnly": "yarn build"
