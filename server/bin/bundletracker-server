@@ -66,21 +66,3 @@ async function newProject({ name }) {
     console.log(`🔑 Use this token to upload bundles: ${token}`)
     process.exit(1)
 }
-
-async function start() {
-    await migrate()
-    await server()
-}
-
-async function cli() {
-    console.log('CLI!', process.argv)
-    const command = process.argv[1] || 'start'
-    const commands = {
-        start,
-        migrate,
-        server,
-    }
-    if (commands[command]) {
-        return await commands[command]()
-    }
-}
