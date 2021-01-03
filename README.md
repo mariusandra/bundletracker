@@ -8,7 +8,7 @@ This service returns an URL, such as:
 
 which opens to this:
 
-![BundleTracker Demo](https://user-images.githubusercontent.com/53387/103389630-4985d680-4b10-11eb-8c5d-4afc56e554be.gif)
+![BundleTracker Demo](https://bundletracker.io/files/demo.gif)
 
 Add it to your CI pipeline and have an instant x-ray into your deployed code.
 
@@ -77,6 +77,7 @@ You can group uploaded bundles into projects. To generate a new project and get 
 
 ```sh
 $ bundletracker-server new project "Project Name"
+
 🏁 Project "Project Name" created!
 🔑 Use this token to upload bundles: FruKK2wTL8ybGCSl452ZzqhXjVNm4B1Q3WTQlrPG
 ```
