@@ -17,7 +17,10 @@ Use the communal `app.bundletracker.io` server, where links expire in 14 days, o
 # Installing the plugin
 
 ```sh
-yarn add @bundletracker/plugin
+# with yarn
+yarn add --dev @bundletracker/plugin
+
+# with npm
 npm install --save-dev @bundletracker/plugin
 ```
 
@@ -29,11 +32,13 @@ module.exports = {
     ...,
     plugins: [
         new BundleTrackerPlugin({
+            // upload only when this is true:
             upload: process.env.NODE_ENV === 'production',
             host: 'https://app.bundletracker.io',
             // token: 'optional project token', 
             // commit: process.env.GITHUB_SHA,
             // branch: process.env.GITHUB_REF?.split('/').splice(2).join('/')
+            // afterUpload: (url) => { console.log(`📦 Bundle Tracked: ${url}`) }
         }),
     ],
 }

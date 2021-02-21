@@ -11,6 +11,7 @@ interface Options {
     token?: string
     commit?: string
     branch?: string
+    afterUpload?: (url: string) => any
 }
 
 /**
@@ -22,6 +23,7 @@ interface Options {
  * @param {String}     opts.token          optional project token
  * @param {String}     opts.commit         optional git commit hash
  * @param {String}     opts.branch         optional git branch name
+ * @param {Function}   opts.afterUpload    gets call with the uploaded url
  *
  * @api public
  */
@@ -35,6 +37,7 @@ export class BundleTrackerPlugin {
             token: opts.token,
             commit: opts.commit,
             branch: opts.branch,
+            afterUpload: opts.afterUpload,
         }
     }
 
@@ -77,7 +80,7 @@ export class BundleTrackerPlugin {
     }
 
     emitStats(curCompiler: any, callback?: any) {
-        const { upload, host, token, commit, branch } = this.opts
+        const { upload, host, token, commit, branch, afterUpload } = this.opts
         if (!upload) {
             console.error('ℹ️ BundleTracker: Skipping upload due to { upload: false } option')
             return
@@ -105,8 +108,12 @@ export class BundleTrackerPlugin {
                     })
                         .then((res) => res.json())
                         .then((res) => {
-                            if (res.message) {
-                                console.log(res.message)
+                            if (res.url) {
+                                if (afterUpload) {
+                                    afterUpload(res.url)
+                                } else {
+                                    console.log(`📦 Bundle Tracked: ${url}`)
+                                }
                             } else {
                                 console.log(res)
                             }
