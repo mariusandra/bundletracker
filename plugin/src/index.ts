@@ -112,7 +112,7 @@ export class BundleTrackerPlugin {
                                 if (afterUpload) {
                                     afterUpload(res.url)
                                 } else {
-                                    console.log(`📦 Bundle Tracked: ${url}`)
+                                    console.log(`📦 Bundle Tracked: ${res.url}`)
                                 }
                             } else {
                                 console.log(res)
